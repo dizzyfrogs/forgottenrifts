@@ -1,0 +1,4 @@
+name: ForgottenRifts
+version: '1.0-SNAPSHOT'
+main: me.dizzyfrogs.forgottenrifts.ForgottenRifts
+api-version: '1.21'
