@@ -2,13 +2,17 @@ package me.dizzyfrogs.forgottenrifts.listener;
 
 import me.dizzyfrogs.forgottenrifts.ForgottenRifts;
 import me.dizzyfrogs.forgottenrifts.model.Rift;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import java.util.UUID;
@@ -49,6 +53,33 @@ public class RiftCreationListener implements Listener {
         String frequency = freqBuilder.toString();
         Rift rift = new Rift(UUID.randomUUID(), topLeft.getLocation(), frequency, face);
         plugin.getRiftManager().registerRift(rift, right);
+
+        Rift partner = plugin.getRiftManager().getPartner(rift);
+        if (partner == null) {
+            // first
+            hitBlock.getWorld().playSound(hitBlock.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f, 0.5f);
+        } else {
+            // found pair, linking sound
+            Location loc1 = rift.getLocation();
+            Location loc2 = partner.getLocation();
+
+            // high pitch resonance at new portal
+            loc1.getWorld().playSound(loc1, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 0.8f);
+            loc1.getWorld().playSound(loc1, Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.2f);
+
+            // harmonic echo at partner portal
+            loc2.getWorld().playSound(loc2, Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 0.8f);
+            loc2.getWorld().playSound(loc2, Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.2f);
+
+            Player shooter = (Player) event.getEntity().getShooter();
+            if (shooter != null) {
+                shooter.getWorld().playSound(shooter.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.2f);
+                shooter.getWorld().playSound(shooter.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.5f, 1.5f);
+            }
+        }
+
+        activateRiftBlocks(rift, partner, right);
+        event.getEntity().remove();
     }
 
     private Vector getRightVector(BlockFace face) {
@@ -79,7 +110,21 @@ public class RiftCreationListener implements Listener {
 
         return curr;
     }
+
     private boolean isStainedGlass(Material material) {
         return material.name().contains("STAINED_GLASS");
+    }
+
+    private void activateRiftBlocks(Rift r1, Rift r2, Vector right) {
+        // setting all blocks to air
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 2; x++) {
+                Location b1 = r1.getLocation().clone().add(right.clone().multiply(x)).add(0, -y, 0);
+                Location b2 = r2.getLocation().clone().add(right.clone().multiply(x)).add(0, -y, 0);
+
+                b1.getBlock().setType(Material.AIR);
+                b2.getBlock().setType(Material.AIR);
+            }
+        }
     }
 }
