@@ -61,6 +61,8 @@ public class RiftCreationListener implements Listener {
             // first
             hitBlock.getWorld().playSound(hitBlock.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f, 0.5f);
         } else {
+            activateRiftBlocks(rift, partner, right);
+
             // found pair, linking sound
             Location loc1 = rift.getLocation();
             Location loc2 = partner.getLocation();
@@ -80,7 +82,6 @@ public class RiftCreationListener implements Listener {
             }
         }
 
-        activateRiftBlocks(rift, partner, right);
         event.getEntity().remove();
     }
 
