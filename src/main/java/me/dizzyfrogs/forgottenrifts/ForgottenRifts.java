@@ -14,7 +14,7 @@ public final class ForgottenRifts extends JavaPlugin {
     @Override
     public void onEnable() {
         RiftKeys.init(this);
-        this.riftManager = new RiftManager();
+        this.riftManager = new RiftManager(this);
 
         new RiftAmbientTask(this).runTaskTimer(this, 0L, 50L);
 
@@ -24,7 +24,10 @@ public final class ForgottenRifts extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (this.riftManager != null) {
+            this.riftManager.save();
+            getLogger().info("All rifts have been saved to rifts.yml");
+        }
     }
 
     public RiftManager getRiftManager() {

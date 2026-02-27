@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import java.util.UUID;
@@ -54,7 +53,7 @@ public class RiftCreationListener implements Listener {
 
         String frequency = freqBuilder.toString();
         Rift rift = new Rift(UUID.randomUUID(), topLeft.getLocation(), frequency, face, right);
-        plugin.getRiftManager().registerRift(rift, right);
+        plugin.getRiftManager().registerRift(rift);
 
         Rift partner = plugin.getRiftManager().getPartner(rift);
         if (partner == null) {
