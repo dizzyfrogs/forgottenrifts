@@ -4,8 +4,10 @@ import me.dizzyfrogs.forgottenrifts.model.Rift;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RiftManager {
     private final Map<Location, Rift> activeRifts = new HashMap<>();
@@ -36,5 +38,9 @@ public class RiftManager {
             }
         }
         return null;
+    }
+
+    public Collection<Rift> getUniqueRifts() {
+        return activeRifts.values().stream().distinct().collect(Collectors.toList());
     }
 }

@@ -17,6 +17,8 @@ import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
+import static me.dizzyfrogs.forgottenrifts.core.VectorHelper.getRightVector;
+
 public class RiftCreationListener implements Listener {
     private final ForgottenRifts plugin;
 
@@ -80,16 +82,6 @@ public class RiftCreationListener implements Listener {
 
         activateRiftBlocks(rift, partner, right);
         event.getEntity().remove();
-    }
-
-    private Vector getRightVector(BlockFace face) {
-        return switch (face) {
-            case NORTH -> new Vector(-1, 0, 0);
-            case SOUTH -> new Vector(1, 0, 0);
-            case EAST -> new Vector(0, 0, -1);
-            case WEST -> new Vector(0, 0, 1);
-            default ->new Vector(0, 0, 0);
-        };
     }
 
     private Block findTopLeft(Block hit, BlockFace face, Vector right) {
