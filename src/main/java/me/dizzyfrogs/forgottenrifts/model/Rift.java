@@ -18,7 +18,7 @@ public class Rift {
         this.location = location;
         this.frequency = frequency;
         this.facing = facing;
-        this.rightVector = rightVector
+        this.rightVector = rightVector;
     }
 
     public UUID getId() { return id; }
