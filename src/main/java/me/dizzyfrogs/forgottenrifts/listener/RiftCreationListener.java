@@ -48,7 +48,7 @@ public class RiftCreationListener implements Listener {
 
         String frequency = freqBuilder.toString();
         Rift rift = new Rift(UUID.randomUUID(), topLeft.getLocation(), frequency, face);
-        plugin.getRiftManager().registerRift(rift);
+        plugin.getRiftManager().registerRift(rift, right);
     }
 
     private Vector getRightVector(BlockFace face) {
@@ -63,14 +63,16 @@ public class RiftCreationListener implements Listener {
 
     private Block findTopLeft(Block hit, BlockFace face, Vector right) {
         Block curr = hit;
+
         while (isStainedGlass(curr.getType())) {
-            curr.getRelative(BlockFace.UP);
+            curr = curr.getRelative(BlockFace.UP);
         }
         // step back down one to top glass then move left until we hit the frame
         curr = curr.getRelative(BlockFace.DOWN);
         Vector left = right.clone().multiply(-1);
+
         while (isStainedGlass(curr.getType())) {
-            curr.getRelative((int)left.getX(), 0, (int)left.getZ());
+            curr = curr.getRelative((int)left.getX(), 0, (int)left.getZ());
         }
         // step back right for the left-most glass
         curr = curr.getRelative((int)right.getX(), 0, (int)right.getZ());

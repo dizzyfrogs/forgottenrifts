@@ -3,6 +3,7 @@ package me.dizzyfrogs.forgottenrifts;
 import me.dizzyfrogs.forgottenrifts.core.RiftKeys;
 import me.dizzyfrogs.forgottenrifts.core.RiftManager;
 import me.dizzyfrogs.forgottenrifts.listener.RiftCreationListener;
+import me.dizzyfrogs.forgottenrifts.listener.RiftTeleportListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ForgottenRifts extends JavaPlugin {
@@ -15,6 +16,7 @@ public final class ForgottenRifts extends JavaPlugin {
         this.riftManager = new RiftManager();
 
         getServer().getPluginManager().registerEvents(new RiftCreationListener(this), this);
+        getServer().getPluginManager().registerEvents(new RiftTeleportListener(this), this);
     }
 
     @Override
