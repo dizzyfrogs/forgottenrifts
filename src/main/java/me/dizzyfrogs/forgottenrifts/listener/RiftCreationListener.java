@@ -53,7 +53,7 @@ public class RiftCreationListener implements Listener {
         }
 
         String frequency = freqBuilder.toString();
-        Rift rift = new Rift(UUID.randomUUID(), topLeft.getLocation(), frequency, face);
+        Rift rift = new Rift(UUID.randomUUID(), topLeft.getLocation(), frequency, face, right);
         plugin.getRiftManager().registerRift(rift, right);
 
         Rift partner = plugin.getRiftManager().getPartner(rift);
@@ -108,14 +108,15 @@ public class RiftCreationListener implements Listener {
     }
 
     private void activateRiftBlocks(Rift r1, Rift r2, Vector right) {
-        // setting all blocks to air
+        clearArea(r1, r1.getRightVector());
+        clearArea(r2, r2.getRightVector());
+    }
+
+    private void clearArea(Rift rift, Vector right) {
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 2; x++) {
-                Location b1 = r1.getLocation().clone().add(right.clone().multiply(x)).add(0, -y, 0);
-                Location b2 = r2.getLocation().clone().add(right.clone().multiply(x)).add(0, -y, 0);
-
-                b1.getBlock().setType(Material.AIR);
-                b2.getBlock().setType(Material.AIR);
+                Location b = rift.getLocation().clone().add(right.clone().multiply(x)).add(0, -y, 0);
+                b.getBlock().setType(Material.AIR);
             }
         }
     }
