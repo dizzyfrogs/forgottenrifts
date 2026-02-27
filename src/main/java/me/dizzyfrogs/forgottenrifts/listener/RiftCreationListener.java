@@ -32,7 +32,7 @@ public class RiftCreationListener implements Listener {
         Block hitBlock = event.getHitBlock();
         BlockFace face = event.getHitBlockFace();
 
-        if (hitBlock == null || face == null || !isStainedGlass(hitBlock.getType())) return;
+        if (hitBlock == null || face == null || face == BlockFace.UP || face == BlockFace.DOWN || !isStainedGlass(hitBlock.getType())) return;
 
         // get relative vectors
         Vector right = getRightVector(face);
