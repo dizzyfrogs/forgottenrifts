@@ -4,12 +4,14 @@ import me.dizzyfrogs.forgottenrifts.ForgottenRifts;
 import me.dizzyfrogs.forgottenrifts.model.Rift;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,16 +53,22 @@ public class RiftTeleportListener implements Listener {
     }
 
     private void performRiftJump(Player player, Rift dest) {
+        Location target = dest.getLocation().clone();
+        Vector right = dest.getRightVector();
+        BlockFace face = dest.getFacing();
+
+        //center player, move to floor
+        target.add(right.clone().multiply(0.5));
+        target.add(0.5, -2.0, 0.5);
+
+        target.setYaw(player.getLocation().getYaw()); // keep yaw for now
+
         // apply the blind effects
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 20, 1));
 
         // play the jump sound at the source and destination
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 0.5f);
-
-        // tp to the center of the destination's top-left block
-        Location target = dest.getLocation().clone().add(0.5, 0, 0.5);
-        target.setYaw(player.getLocation().getYaw()); // keep their looking direction for now
 
         player.teleport(target);
 
