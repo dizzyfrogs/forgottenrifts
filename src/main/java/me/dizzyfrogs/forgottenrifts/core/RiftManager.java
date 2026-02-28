@@ -33,11 +33,27 @@ public class RiftManager {
         Location start = rift.getLocation();
         Vector right = rift.getRightVector();
 
+        // air
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 2; x++) {
                 Location blockLoc = start.clone().add(right.clone().multiply(x)).add(0, -y, 0);
                 activeRifts.put(blockLoc, rift);
             }
+        }
+
+        // frame
+        int[] yOffsets = {1, -3}; // top/bottom rows
+        for (int yOff : yOffsets) {
+            for (int x = -1; x < 3; x++) {
+                Location frameLoc = start.clone().add(right.clone().multiply(x)).add(0, yOff, 0);
+                activeRifts.put(frameLoc, rift);
+            }
+        }
+        for (int y = 0; y < 3; y++) { // side pillars
+            Location leftLoc = start.clone().add(right.clone().multiply(-1)).add(0, -y, 0);
+            Location rightLoc = start.clone().add(right.clone().multiply(2)).add(0, -y, 0);
+            activeRifts.put(leftLoc, rift);
+            activeRifts.put(rightLoc, rift);
         }
     }
 
