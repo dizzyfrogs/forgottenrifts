@@ -41,6 +41,8 @@ public class RiftCreationListener implements Listener {
         Block topLeft = findTopLeft(hitBlock, face, right);
         if (topLeft == null) return;
 
+        if (!isFrameValid(topLeft, right)) return;
+
         // scan for the frequency
         StringBuilder freqBuilder = new StringBuilder();
         for (int y = 0; y < 3; y++) {
@@ -101,6 +103,29 @@ public class RiftCreationListener implements Listener {
         curr = curr.getRelative((int)right.getX(), 0, (int)right.getZ());
 
         return curr;
+    }
+
+    private boolean isFrameValid(Block topLeft, Vector right) {
+        // top and bottom rows
+        int[] yOffsets = {1, -3};
+        for (int yOff : yOffsets) {
+            for (int x = -1; x < 3; x++) {
+                Block border = topLeft.getRelative((int) (right.getX() * x), yOff, (int) (right.getZ() * x));
+                Material required = (x == -1 || x == 2) ? Material.NETHERITE_BLOCK : Material.CRYING_OBSIDIAN;
+                if (border.getType() != required) return false;
+            }
+        }
+
+        // side pillars
+        for (int y = 0; y < 3; y++) {
+            Block leftPillar = topLeft.getRelative((int) -right.getX(), -y, (int) -right.getZ());
+            Block rightPillar = topLeft.getRelative((int) (right.getX() * 2), -y, (int) (right.getZ() * 2));
+
+            if (leftPillar.getType() != Material.CRYING_OBSIDIAN) return false;
+            if (rightPillar.getType() != Material.CRYING_OBSIDIAN) return false;
+        }
+
+        return true;
     }
 
     private boolean isStainedGlass(Material material) {
