@@ -1,4 +1,5 @@
 name: ForgottenRifts
-version: '1.0-SNAPSHOT'
+authors: [DizzyFrogs, hak33m16]
+version: '1.0'
 main: me.dizzyfrogs.forgottenrifts.ForgottenRifts
 api-version: '1.21'
