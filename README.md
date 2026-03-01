@@ -50,6 +50,6 @@ Built with the **Spigot/Paper API**.
 
 ### Building from Source
 ```bash
-git clone [https://github.com/dizzyfrogs/ForgottenRifts.git](https://github.com/dizzyfrogs/ForgottenRifts.git)
+git clone https://github.com/dizzyfrogs/ForgottenRifts.git
 cd ForgottenRifts
 ./gradlew build
